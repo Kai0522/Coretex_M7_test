@@ -1,10 +1,7 @@
 MEMORY
 {
 	FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 1M
-<<<<<<< HEAD
-	SRAM (rwx) : ORIGIN = 0x20010000, LENGTH = 256K
-=======
->>>>>>> f9a93842e6341b7a07612597ac0615453dcf2c5f
+	SRAM (rwx) : ORIGIN = 0x20010000, LENGTH =256K
 }
 
 SECTIONS
@@ -16,7 +13,6 @@ SECTIONS
 		*(.rodata)
 		_data_lma_start = .; 
 	} > FLASH
-<<<<<<< HEAD
 
 	.data : AT(_data_lma_start) 
 	{
@@ -32,8 +28,6 @@ SECTIONS
 		*(COMMON)
 		_bss_vma_end = .;
 	} > SRAM
-	
-	_msp_init = ORIGIN(SRAM) + LENGTH(SRAM);
-=======
->>>>>>> f9a93842e6341b7a07612597ac0615453dcf2c5f
+_msp_init = ORIGIN(SRAM) + LENGTH(SRAM);
+
 }
