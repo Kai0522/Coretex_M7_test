@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "reg.h"
 #include "GPIO.h"
+int a=1;
 
 void pinMode(unsigned int port,unsigned int pin,unsigned int mode){
 	if(mode==1){

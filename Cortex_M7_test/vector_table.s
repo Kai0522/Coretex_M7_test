@@ -1,4 +1,4 @@
 .section .vector_table
 
-.word 0x20000100
-.word main
+.word _msp_init
+.word reset_handler
