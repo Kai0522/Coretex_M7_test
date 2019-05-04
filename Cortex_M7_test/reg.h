@@ -1,10 +1,5 @@
 #ifndef REG_H
 #define REG_H
-//Defign syntax
-#define OUTPUT 1
-#define INPUT 0
-#define HIGH 1
-#define LOW 0
 //REG OPERATIONS
 
 #define UINT32_1 ((uint32_t)1)

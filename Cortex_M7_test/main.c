@@ -1,17 +1,20 @@
-#include "GPIO.h"
+#include "Kai_STM32f74xxx.h"
 #include "reg.h"
-int j=522;
-int i=500;
-int bss_test;
-
+#include <stdlib.h>
+	        
 int main(){
-    pinMode(GPIO_PORTI,1,OUTPUT);
+    GPIO_obj *PI1=NULL;
+    GPIO_init(&PI1);
+    PI1->PORT=GPIO_PORTI;
+    PI1->PIN=1;
     while(1){
-     digitalWrite(GPIO_PORTI,1,HIGH);
-     for(i=0;i<100000;i++)
-         ;
-     digitalWrite(GPIO_PORTI,1,LOW);
-     for(i=0;i<100000;i++)
-         ;
+        PI1->OSTATUS=HIGH;
+        PI1->digitalWrite(PI1);
+        for(int i=0;i<100000;i++)
+            ;
+        PI1->OSTATUS=HIGH;
+        PI1->digitalWrite(PI1);
+        for(int i=0;i<100000;i++)
+            ;
     }
 }
