@@ -12,7 +12,7 @@ int main(){
         PI1->digitalWrite(PI1);
         for(int i=0;i<100000;i++)
             ;
-        PI1->OSTATUS=HIGH;
+        PI1->OSTATUS=LOW;
         PI1->digitalWrite(PI1);
         for(int i=0;i<100000;i++)
             ;
