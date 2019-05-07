@@ -2,6 +2,7 @@
 #include "malloc.h"
 #include "reg.h"
 #include <stdint.h>
+#include <stdlib.h>
 
 int init_sysclk(sysclk_obj **self){
     if(NULL==(*self=malloc(sizeof(sysclk_obj)))) return -1;
@@ -13,7 +14,8 @@ int init_sysclk(sysclk_obj **self){
 }
 
 void set_sysclk_impl(sysclk_obj *self){
-    switch(source){
+    int pll_p;
+    switch(self->source){
         case HSI:
             // enable HSI
             SET_BIT(RCC_BASE+RCC_CR_OFFSET,HSION_BIT);
@@ -51,27 +53,27 @@ void set_sysclk_impl(sysclk_obj *self){
             }
             
             //set pll
-            SET_BIT(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLSCR_BIT);
+            SET_BIT(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLSRC_BIT);
             
             //f_HSE=8Mhz
             //f_PLL_out=(8*N/M)/P
-            if(PLL_N<2) PLL_N=2;
-            if(PLL_N>432) PLL_N=432;
-            if(PLL_M<2) PLL_M=2;
-            switch(PLL_P){
+            if(self->PLL_N<2) self->PLL_N=2;
+            if(self->PLL_N>432) self->PLL_N=432;
+            if(self->PLL_M<2) self->PLL_M=2;
+            switch(self->PLL_P){
                 case 2:
-                    uint8_t pll_p=0b00;
+                    pll_p=0b00;
                 case 4:
-                    uint8_t pll_p=0b01;
+                    pll_p=0b01;
                 case 6: 
-                    uint8_t pll_p=0b10;
+                    pll_p=0b10;
                 case 8:
-                    uint8_t pll_p=0b11;
+                    pll_p=0b11;
             }
             WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLP_1_BIT,PLLP_0_BIT,pll_p);
-            WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLN_8_BIT,PLLN_0_BIT,PLL_N);
-            WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLM_5_BIT,PLLM_0_BIT,PLL_M);
-            int PLL_OUT_FREQ=(8*PLL_N/PLL_M)/pll_p;
+            WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLN_8_BIT,PLLN_0_BIT,self->PLL_N);
+            WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLM_5_BIT,PLLM_0_BIT,self->PLL_M);
+            int PLL_OUT_FREQ=(8*(self->PLL_N)/(self->PLL_M))/pll_p;
             //enable pll
             SET_BIT(RCC_BASE+RCC_CR_OFFSET,PLLON_BIT);
 
