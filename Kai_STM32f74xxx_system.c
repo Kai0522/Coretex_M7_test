@@ -15,10 +15,32 @@ int init_sysclk(sysclk_obj **self){
 void set_sysclk_impl(sysclk_obj *self){
     switch(source){
         case HSI:
+            // enable HSI
+            SET_BIT(RCC_BASE+RCC_CR_OFFSET,HSION_BIT);
+            
+            // wait
+            while (READ_BIT(RCC_BASE + RCC_CR_OFFSET,HSIRDY_BIT)!=1){
+            }
+            //use HSI as sysclk
+            WRITE_BITS(RCC_BASE+RCC_CFGR_OFFSET,SW_1_BIT,SW_0_BIT,0b00);
 
+            //wait
+            while((READ_BIT(RCC_BASE+RCC_CFGR_OFFSET,SWS_1_BIT)!=0)||READ_BIT(RCC_BASE+RCC_CFGR_OFFSET,SWS_0_BIT)!=0){
+            }            
 
         case HSE:
+            // enable HSE
+            SET_BIT(RCC_BASE+RCC_CR_OFFSET,HSEON_BIT);
+            
+            // wait
+            while (READ_BIT(RCC_BASE + RCC_CR_OFFSET,HSERDY_BIT)!=1){
+            }
+            //use HSE as sysclk
+            WRITE_BITS(RCC_BASE+RCC_CFGR_OFFSET,SW_1_BIT,SW_0_BIT,0b01);
 
+            //wait
+            while((READ_BIT(RCC_BASE+RCC_CFGR_OFFSET,SWS_1_BIT)!=0)||READ_BIT(RCC_BASE+RCC_CFGR_OFFSET,SWS_0_BIT)!=1){
+            }            
 
         case PLL:
             // enable HSE

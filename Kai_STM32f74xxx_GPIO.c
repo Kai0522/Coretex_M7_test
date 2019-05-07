@@ -3,11 +3,12 @@
 #include "reg.h"
 #include "Kai_STM32f74xxx_GPIO.h"
 int GPIO_init(GPIO_obj **self){
-    if(NULL == (*self=malloc(sizeof(GPIO_obj)))) return -1;
-    //Reset default parameter:OUTPUT LOW,push-pull,Loe speed,No pull-up,No pull-down 
-    (*self)->PORT=0; (*self)->PIN=0;
-    (*self)->OTYPER=push_pull; (*self)->OSPEEDR=Low_speed;(*self)->PUPDR=No_pull_up_pull_down; 
-    (*self)->OSTATUS=LOW;
+    if(NULL == (*self=malloc(sizeof(GPIO_obj)))) return -1; 
+    (*self)->PORT=0; (*self)->PIN=0; //default PORT=A PIN=0
+    (*self)->OTYPER=push_pull; (*self)->OSPEEDR=Low_speed;(*self)->PUPDR=No_pull_up_pull_down; //default  speed type pull-up pull-down
+    (*self)->OSTATUS=LOW; //default reset pin
+
+    //assign function pointer
     (*self)->digitalWrite=digitalWrite_impl;
     (*self)->digitalRead=digitalRead_impl;
     return 0;

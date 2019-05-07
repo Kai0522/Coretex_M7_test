@@ -29,6 +29,8 @@
 #define PLLON_BIT 24
 #define HSERDY_BIT 17
 #define HSEON_BIT 16
+#define HSION_BIT 0
+#define HSIRDY_BIT 1
 
 #define RCC_PLLCFGR_OFFSET 0x04
 
