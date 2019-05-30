@@ -4,3 +4,6 @@
 
 ### 05.05.2019
 Finish system boot up,.bss and .data section memory mapping,GPIO library,malloc() and free() instruction.
+
+### 05.30.2019
+Finish system cloick configuration ,context switch ,system call ,cooperating multitasking.
