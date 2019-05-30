@@ -5,7 +5,9 @@ CFLAGS=gcc -Wall -std=c11 -mcpu=cortex-m7 -mthumb -mfloat-abi=hard \
 
 all: main.bin
 
-main.bin:vector_table.s startup.c Kai_STM32f74xxx_GPIO.c Kai_STM32f74xxx_system.c main.c malloc.c
+main.bin:vector_table.s startup.c Kai_STM32f74xxx_GPIO.c \
+	Kai_STM32f74xxx_system.c main.c malloc.c context_switch.S \
+	syscall.S
 	$(CROSS-COMPILER)$(CFLAGS) $^ -o main.elf
 	$(CROSS-COMPILER)objcopy -O binary main.elf main.bin
 
