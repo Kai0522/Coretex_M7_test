@@ -1,13 +1,9 @@
 #include "Kai_STM32f74xxx_system.h"
-#include "malloc.h"
-#include "reg.h"
-#include <stdint.h>
-#include <stdlib.h>
 
 int init_sysclk(sysclk_obj **self){
     if(NULL==(*self=malloc(sizeof(sysclk_obj)))) return -1;
 
-    (*self)->source=PLL; (*self)->PLL_P=2 ;(*self)->PLL_M=4 ; (*self)->PLL_N=168;
+    (*self)->source=PLL; (*self)->PLL_P=2 ;(*self)->PLL_M=4 ; (*self)->PLL_N=56;
     (*self)->set_sysclk=set_sysclk_impl;
     
     return 0;
@@ -55,7 +51,7 @@ void set_sysclk_impl(sysclk_obj *self){
             //set pll
             SET_BIT(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLSRC_BIT);
             
-            //f_HSE=8Mhz
+            //f_HSE=24Mhz
             //f_PLL_out=(8*N/M)/P
             if(self->PLL_N<2) self->PLL_N=2;
             if(self->PLL_N>432) self->PLL_N=432;

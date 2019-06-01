@@ -1,6 +1,3 @@
-#include <stdint.h>
-#include <malloc.h>
-#include "reg.h"
 #include "Kai_STM32f74xxx_GPIO.h"
 int GPIO_init(GPIO_obj **self){
     if(NULL == (*self=malloc(sizeof(GPIO_obj)))) return -1; 

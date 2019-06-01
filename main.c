@@ -30,12 +30,11 @@ unsigned int *create_task(unsigned int *stack, void (*start)(void))
 	stack[15] = (unsigned int) start;
 	stack[16] = (unsigned int) 0x01000000; /* PSR Thumb bit */
 	stack = activate(stack);
-
 	return stack;
 }
 
 /*Task_1*/
-int task_1(){
+void task_1(){
     //Initialize task_1
     // Initial PI1
     GPIO_obj *PI1=NULL;
@@ -57,7 +56,7 @@ int task_1(){
 }
 
 /*Task_2*/
-int task_2(){
+void task_2(){
     //Initialize task_1 
     // Initial PI1
     GPIO_obj *PI1=NULL;
@@ -92,7 +91,7 @@ int main(){
     CLOCK->set_sysclk(CLOCK);
 
     //Regist User task_1
-	usertasks[0] = create_task(user_stacks[0], &task_1);
+	usertasks[0] = create_task(user_stacks[0],&task_1);
 	task_count += 1; 
     //Regist User task_2
 	usertasks[1] = create_task(user_stacks[1], &task_2);
@@ -104,5 +103,4 @@ int main(){
 		usertasks[current_task] = activate(usertasks[current_task]);
 		current_task = current_task == (task_count - 1) ? 0 : current_task + 1;
     }
-
 }

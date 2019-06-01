@@ -3,6 +3,10 @@
 #ifndef GPIO_H
 #define GPIO_H
 
+#include <stdint.h>
+#include <malloc.h>
+#include "reg.h"
+
 #define push_pull 0
 #define open_drain 1
 
