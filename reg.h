@@ -2,7 +2,6 @@
 #define REG_H
 
 //REG OPERATIONS
-
 #define UINT32_1 ((uint32_t)1)
 
 #define REG(addr) (*((volatile uint32_t *)(addr)))
@@ -96,4 +95,28 @@
 #define BSy_BIT(y) (y)
 
 #define GPIOx_IDR_OFFSET 0x10
+
+#define GPIOx_AFRL_OFFSET 0X20
+#define AFRLy_3_BIT(y) ((y)*4 + 3)
+#define AFRLy_0_BIT(y) ((y)*4)
+
+#define GPIOx_AFRH_OFFSET 0X24
+#define AFRHy_3_BIT(y) ((y-8)*4 + 3)
+#define AFRHy_0_BIT(y) ((y-8)*4)
+
+
+//I2C
+#define I2C1_BASE 0x40005400
+#define I2C_CR1_OFFSET 0x0
+#define I2C_CR2_OFFSET 0x4
+#define I2C_OAR1_OFFSET 0x8
+#define I2C_OAR2_OFFSET 0xC
+#define I2C_TIMINGR_OFFSET 0x10
+#define I2C_TIMEOUTR_OFFSET 0x14
+#define I2C_ISR_OFFSET 0x18
+#define I2C_ICR_OFFSET 0x1c
+#define I2C_PECR_OFFSET 0x20
+#define I2C_RXDR_OFFSET 0x24
+#define I2C_TXDR_OFFSET 0x28
+
 #endif

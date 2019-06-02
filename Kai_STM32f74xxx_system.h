@@ -1,10 +1,10 @@
 #ifndef __OS_H_
 #define __OS_H_
 
+#include <stdint.h>
+#include <stddef.h>
 #include "malloc.h"
 #include "reg.h"
-#include <stdint.h>
-#include <stdlib.h>
 
 #define MAX_TASKS 10
 #define STACK_SIZE 256

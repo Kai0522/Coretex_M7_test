@@ -1,8 +1,8 @@
+#include <stdint.h>
 #include "Kai_STM32f74xxx_GPIO.h"
 #include "Kai_STM32f74xxx_system.h"
 #include "reg.h"
 #include "asm.h"
-#include <stdlib.h>
 
 #define STACK_SIZE 256
 #define TASK_LIMIT 2
@@ -87,7 +87,7 @@ int main(){
     //Set_system clock
     sysclk_obj *CLOCK=NULL;
     init_sysclk(&CLOCK);
-    CLOCK->source=HSI;
+    CLOCK->source=PLL;
     CLOCK->set_sysclk(CLOCK);
 
     //Regist User task_1
