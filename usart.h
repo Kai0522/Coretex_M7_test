@@ -4,5 +4,5 @@
 
 void init_usart6(void);
 void usart6_send_char(const char ch);
-
+void usart_print(char *string);
 #endif

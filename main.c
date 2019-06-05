@@ -42,6 +42,7 @@ void task_1(){
     GPIO_init(&PI1);
     PI1->PORT=GPIO_PORTI;
     PI1->PIN=1;
+    usart_print("Task1:Complete Build Task 1\n\r");
     syscall();
 
     //Running task_1
@@ -64,11 +65,11 @@ void task_2(){
     GPIO_init(&PI1);
     PI1->PORT=GPIO_PORTI;
     PI1->PIN=1;
+    usart_print("Task2:Complete Build Task 2\n\r");
     syscall();
 
     //Running task_1
     while(1){
-        usart6_send_char('a');
         //Set PI1
         PI1->OSTATUS=LOW;
         PI1->digitalWrite(PI1);
@@ -84,23 +85,29 @@ int main(){
 	unsigned int *usertasks[TASK_LIMIT];
 	size_t task_count = 0;
 	size_t current_task;
-	task_init();
     //Set_system clock
     sysclk_obj *CLOCK=NULL;
     init_sysclk(&CLOCK);
     CLOCK->source=PLL;
     CLOCK->set_sysclk(CLOCK);
-
     init_usart6();
+
+    usart_print("OS:Starting...\n\r");
+	task_init();
+
+    usart_print("OS:Registing Task1\n\r");
     //Regist User task_1
 	usertasks[0] = create_task(user_stacks[0],&task_1);
 	task_count += 1; 
+
+    usart_print("OS:Registing Task2\n\r");
     //Regist User task_2
 	usertasks[1] = create_task(user_stacks[1], &task_2);
 	task_count += 1;
 
     //Start multitasking
 	current_task = 0;
+    usart_print("OS:Starting multitasking ,back to OS until task yield \n\r");
     while(1){
 		usertasks[current_task] = activate(usertasks[current_task]);
 		current_task = current_task == (task_count - 1) ? 0 : current_task + 1;

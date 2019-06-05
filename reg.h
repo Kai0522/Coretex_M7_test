@@ -132,7 +132,7 @@
 #define DIV_FRACTION_0_BIT 0
 
 #define USART_CR1_OFFSET 0x00
-#define UE_BIT 13
+#define UE_BIT 0
 #define RXNEIE_BIT 5
 #define TE_BIT 3
 #define RE_BIT 2

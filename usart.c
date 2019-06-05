@@ -98,3 +98,7 @@ void usart6_handler(void)
 		usart6_send_char(ch);
 	}
 }
+void usart_print(char *string){
+	while (*string != '\0')
+		usart6_send_char(*string++);
+}
