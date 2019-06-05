@@ -3,7 +3,7 @@
 #include "Kai_STM32f74xxx_system.h"
 #include "reg.h"
 #include "asm.h"
-
+#include "usart.h"
 #define STACK_SIZE 256
 #define TASK_LIMIT 2
 
@@ -32,6 +32,7 @@ unsigned int *create_task(unsigned int *stack, void (*start)(void))
 	stack = activate(stack);
 	return stack;
 }
+
 
 /*Task_1*/
 void task_1(){
@@ -67,6 +68,7 @@ void task_2(){
 
     //Running task_1
     while(1){
+        usart6_send_char('a');
         //Set PI1
         PI1->OSTATUS=LOW;
         PI1->digitalWrite(PI1);
@@ -82,7 +84,6 @@ int main(){
 	unsigned int *usertasks[TASK_LIMIT];
 	size_t task_count = 0;
 	size_t current_task;
-
 	task_init();
     //Set_system clock
     sysclk_obj *CLOCK=NULL;
@@ -90,6 +91,7 @@ int main(){
     CLOCK->source=PLL;
     CLOCK->set_sysclk(CLOCK);
 
+    init_usart6();
     //Regist User task_1
 	usertasks[0] = create_task(user_stacks[0],&task_1);
 	task_count += 1; 
@@ -103,4 +105,17 @@ int main(){
 		usertasks[current_task] = activate(usertasks[current_task]);
 		current_task = current_task == (task_count - 1) ? 0 : current_task + 1;
     }
+}
+
+void hardfault_handler(void)
+{
+	// Initial PI1
+    GPIO_obj *PI1=NULL;
+    GPIO_init(&PI1);
+    PI1->PORT=GPIO_PORTI;
+    PI1->PIN=1;
+
+    //Set PI1
+    PI1->OSTATUS=HIGH;
+    PI1->digitalWrite(PI1);
 }

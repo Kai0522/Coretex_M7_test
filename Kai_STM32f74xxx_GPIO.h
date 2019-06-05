@@ -1,5 +1,3 @@
-/*  This library is coded by Kai0522 ,is written by C99.*/
-/*License MIT Copyright (c) <2019> <Li-Kai Lin>*/
 #ifndef GPIO_H
 #define GPIO_H
 

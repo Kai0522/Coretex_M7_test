@@ -96,7 +96,7 @@ void set_sysclk_impl(sysclk_obj *self){
             if (PLL_OUT_FREQ>120 && PLL_OUT_FREQ<=150)
                 WRITE_BITS(FLASH_BASE+FLASH_ACR_OFFSET,LATENCY_2_BIT,LATENCY_0_BIT,0b100);
             if (PLL_OUT_FREQ>150 && PLL_OUT_FREQ<=168) 
-                WRITE_BITS(FLASH_BASE+FLASH_ACR_OFFSET,LATENCY_2_BIT,LATENCY_0_BIT,0b101);
+                WRITE_BITS(FLASH_BASE+FLASH_ACR_OFFSET,LATENCY_2_BIT,LATENCY_0_BIT,0b111);
             
             //use pll
             WRITE_BITS(RCC_BASE+RCC_CFGR_OFFSET,SW_1_BIT,SW_0_BIT,0b10);

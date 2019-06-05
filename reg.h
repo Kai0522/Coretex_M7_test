@@ -47,9 +47,13 @@
 #define RCC_CFGR_OFFSET 0x08
 #define MCO2_1_BIT 31
 #define MCO2_0_BIT 30
+#define MCO1_1_BIT 22
+#define MCO1_0_BIT 21
 
 #define MCO2PRE_2_BIT 29
 #define MCO2PRE_0_BIT 27
+#define MCO1PRE_2_BIT 26
+#define MCO1PRE_0_BIT 24
 
 #define SWS_1_BIT 3
 #define SWS_0_BIT 2
@@ -60,6 +64,10 @@
 #define RCC_AHB1ENR_OFFSET 0x30
 #define GPIO_EN_BIT(port) (port)
 
+#define RCC_APB2ENR_OFFSET 0x44
+#define SYSCFGEN_BIT 14
+#define USART1EN 4
+#define USART6EN 5
 //GPIO
 #define GPIO_PORTA 0
 #define GPIO_PORTB 1
@@ -103,6 +111,89 @@
 #define GPIOx_AFRH_OFFSET 0X24
 #define AFRHy_3_BIT(y) ((y-8)*4 + 3)
 #define AFRHy_0_BIT(y) ((y-8)*4)
+
+//USART
+#define USART1_BASE 0x40011000
+#define USART6_BASE 0x40011400
+
+#define USART_ISR_OFFSET 0x1C
+#define TXE_BIT 7
+#define TC_BIT 6
+#define RXNE_BIT 5
+#define ORE_BIT 3
+
+#define USART_RDR_OFFSET 0x24
+#define USART_TDR_OFFSET 0x28
+
+#define USART_BRR_OFFSET 0x0C
+#define DIV_MANTISSA_11_BIT 15
+#define DIV_MANTISSA_0_BIT 4
+#define DIV_FRACTION_3_BIT 3
+#define DIV_FRACTION_0_BIT 0
+
+#define USART_CR1_OFFSET 0x00
+#define UE_BIT 13
+#define RXNEIE_BIT 5
+#define TE_BIT 3
+#define RE_BIT 2
+
+//MPU
+#define MPU_BASE 0xE000ED90
+
+#define MPU_CTRL_OFFSET 0x04
+#define MPU_PRIVDEFENA_BIT 2
+#define MPU_ENABLE_BIT 0
+
+#define MPU_RBAR_OFFSET 0x0C
+#define MPU_RBAR_VALUE(addr, region) (((uint32_t)(addr)) | (UINT32_1 << 4) | ((uint32_t)(region)))
+
+#define MPU_RASR_OFFSET 0x10
+#define MPU_RASR_VALUE(xn, ap, type, srd, size) (((uint32_t)(xn) << 28) | ((uint32_t)(ap) << 24) | ((uint32_t)(type) << 16) | ((uint32_t)(srd) << 8) | ((uint32_t)(size) << 1) | UINT32_1)
+#define MPU_XN_DISABLE 0
+#define MPU_XN_ENABLE 1
+#define MPU_AP_NO_ACCESS 0b000
+#define MPU_AP_PRIV_ACCESS 0b001
+#define MPU_AP_NPRIV_RO 0b010
+#define MPU_AP_FULL_ACCESS 0b011
+#define MPU_AP_PRIV_RO 0b101
+#define MPU_AP_RO 0b110
+#define MPU_TYPE_FLASH 0b000010
+#define MPU_TYPE_SRAM 0b000110
+#define MPU_TYPE_EXRAM 0b000111
+#define MPU_TYPE_PERIPHERALS 0b000101
+#define MPU_REGION_SIZE_32B 0b00100
+#define MPU_REGION_SIZE_64B 0b00101
+#define MPU_REGION_SIZE_128B 0b00110
+#define MPU_REGION_SIZE_256B 0b00111
+#define MPU_REGION_SIZE_512B 0b01000
+#define MPU_REGION_SIZE_1KB 0b01001
+#define MPU_REGION_SIZE_2KB 0b01010
+#define MPU_REGION_SIZE_4KB 0b01011
+#define MPU_REGION_SIZE_8KB 0b01100
+#define MPU_REGION_SIZE_16KB 0b01101
+#define MPU_REGION_SIZE_32KB 0b01110
+#define MPU_REGION_SIZE_64KB 0b01111
+#define MPU_REGION_SIZE_128KB 0b10000
+#define MPU_REGION_SIZE_256KB 0b10001
+#define MPU_REGION_SIZE_512KB 0b10010
+#define MPU_REGION_SIZE_1MB 0b10011
+#define MPU_REGION_SIZE_2MB 0b10100
+#define MPU_REGION_SIZE_4MB 0b10101
+#define MPU_REGION_SIZE_8MB 0b10110
+#define MPU_REGION_SIZE_16MB 0b10111
+#define MPU_REGION_SIZE_32MB 0b11000
+#define MPU_REGION_SIZE_64MB 0b11001
+#define MPU_REGION_SIZE_128MB 0b11010
+#define MPU_REGION_SIZE_256MB 0b11011
+#define MPU_REGION_SIZE_512MB 0b11100
+#define MPU_REGION_SIZE_1GB 0b11101
+#define MPU_REGION_SIZE_2GB 0b11110
+#define MPU_REGION_SIZE_4GB 0b11111
+
+//NVIC
+#define NVIC_ISER_BASE 0xE000E100
+
+#define NVIC_ISERn_OFFSET(n) (0x00 + 4 * (n))
 
 
 //I2C
