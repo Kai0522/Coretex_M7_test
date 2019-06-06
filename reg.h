@@ -195,6 +195,12 @@
 
 #define NVIC_ISERn_OFFSET(n) (0x00 + 4 * (n))
 
+//SYSTIC 
+#define SYSTICK_BASE 0xE000E010
+#define SYST_CSR_OFFSET 0x0
+#define SYST_RVR_OFFSET 0x4
+#define SYST_CVR_OFFSET 0x8
+#define SYST_CALIB_OFFSET 0xC
 
 //I2C
 #define I2C1_BASE 0x40005400

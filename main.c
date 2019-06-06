@@ -9,9 +9,10 @@
 
 void task_init(void)
 {
-	unsigned int empty[32];
-	task_init_env(empty + 32);
+	unsigned int null_stacks[32];
+	init_activate_env(&null_stacks[32]);
 }
+
 
 /* Exception return behavior */
 #define HANDLER_MSP	0xFFFFFFF1
@@ -42,7 +43,7 @@ void task_1(){
     GPIO_init(&PI1);
     PI1->PORT=GPIO_PORTI;
     PI1->PIN=1;
-    usart_print("Task1:Complete Build Task 1\n\r");
+    usart_print("\rTask1:Complete Build Task 1\n\r");
     syscall();
 
     //Running task_1
@@ -51,9 +52,13 @@ void task_1(){
         PI1->OSTATUS=HIGH;
         PI1->digitalWrite(PI1);
         //Delay
-        for(int i=0;i<1000000;i++)
+        for(int i=0;i<1750000;i++)
             ;
-        syscall();
+        PI1->OSTATUS=LOW;
+        PI1->digitalWrite(PI1);
+        //Delay
+        for(int i=0;i<1750000;i++)
+            ;
     }
 }
 
@@ -61,22 +66,16 @@ void task_1(){
 void task_2(){
     //Initialize task_1 
     // Initial PI1
-    GPIO_obj *PI1=NULL;
-    GPIO_init(&PI1);
-    PI1->PORT=GPIO_PORTI;
-    PI1->PIN=1;
-    usart_print("Task2:Complete Build Task 2\n\r");
+    usart_print("\rTask2:Complete Build Task 2\n\r");
     syscall();
 
     //Running task_1
     while(1){
         //Set PI1
-        PI1->OSTATUS=LOW;
-        PI1->digitalWrite(PI1);
+        usart_print("\rTask2:Running Task 2\n\r");
         //Delay
-        for(int i=0;i<1000000;i++)
+        for(int i=0;i<1750000;i++)
             ;
-        syscall();
     }
 }
 
@@ -92,27 +91,29 @@ int main(){
     CLOCK->set_sysclk(CLOCK);
     init_usart6();
 
-    usart_print("OS:Starting...\n\r");
+    usart_print("\rOS:Starting...\n\r");
 	task_init();
 
-    usart_print("OS:Registing Task1\n\r");
+    usart_print("\rOS:Registing Task1\n\r");
     //Regist User task_1
 	usertasks[0] = create_task(user_stacks[0],&task_1);
 	task_count += 1; 
 
-    usart_print("OS:Registing Task2\n\r");
+    usart_print("\rOS:Registing Task2\n\r");
     //Regist User task_2
 	usertasks[1] = create_task(user_stacks[1], &task_2);
 	task_count += 1;
 
+    init_systick_handler(CLOCK);
     //Start multitasking
 	current_task = 0;
-    usart_print("OS:Starting multitasking ,back to OS until task yield \n\r");
+    usart_print("\rOS:Starting multitasking ,back to OS until task yield \n\r");
     while(1){
 		usertasks[current_task] = activate(usertasks[current_task]);
 		current_task = current_task == (task_count - 1) ? 0 : current_task + 1;
     }
 }
+
 
 void hardfault_handler(void)
 {

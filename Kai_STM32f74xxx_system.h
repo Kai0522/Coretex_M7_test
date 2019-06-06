@@ -24,4 +24,5 @@ struct sysclk {
 
 int init_sysclk(sysclk_obj **self);
 void set_sysclk_impl(sysclk_obj *self);
+void init_systick_handler(sysclk_obj *self);
 #endif

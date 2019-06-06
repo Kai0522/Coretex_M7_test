@@ -53,7 +53,7 @@ void set_sysclk_impl(sysclk_obj *self){
             //set pll
             SET_BIT(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLSRC_BIT);
             
-            //f_HSE=24Mhz
+            //f_HSE=25Mhz
             //f_PLL_out=(24*N/M)/P
             if(self->PLL_N<2) self->PLL_N=2;
             if(self->PLL_N>432) self->PLL_N=432;
@@ -75,7 +75,7 @@ void set_sysclk_impl(sysclk_obj *self){
             WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLP_1_BIT,PLLP_0_BIT,pll_p);
             WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLN_8_BIT,PLLN_0_BIT,self->PLL_N);
             WRITE_BITS(RCC_BASE+RCC_PLLCFGR_OFFSET,PLLM_5_BIT,PLLM_0_BIT,self->PLL_M);
-            int PLL_OUT_FREQ=(24*(self->PLL_N)/(self->PLL_M))/self->PLL_P;
+            int PLL_OUT_FREQ=(25*(self->PLL_N)/(self->PLL_M))/self->PLL_P;
             //enable pll
             SET_BIT(RCC_BASE+RCC_CR_OFFSET,PLLON_BIT);
 
@@ -96,6 +96,10 @@ void set_sysclk_impl(sysclk_obj *self){
             if (PLL_OUT_FREQ>120 && PLL_OUT_FREQ<=150)
                 WRITE_BITS(FLASH_BASE+FLASH_ACR_OFFSET,LATENCY_2_BIT,LATENCY_0_BIT,0b100);
             if (PLL_OUT_FREQ>150 && PLL_OUT_FREQ<=168) 
+                WRITE_BITS(FLASH_BASE+FLASH_ACR_OFFSET,LATENCY_2_BIT,LATENCY_0_BIT,0b101);
+            if (PLL_OUT_FREQ>168 && PLL_OUT_FREQ<=200) 
+                WRITE_BITS(FLASH_BASE+FLASH_ACR_OFFSET,LATENCY_2_BIT,LATENCY_0_BIT,0b110);
+            if (PLL_OUT_FREQ>200) 
                 WRITE_BITS(FLASH_BASE+FLASH_ACR_OFFSET,LATENCY_2_BIT,LATENCY_0_BIT,0b111);
             
             //use pll
@@ -105,4 +109,11 @@ void set_sysclk_impl(sysclk_obj *self){
             }
             break;
     }
+}
+
+void init_systick_handler(sysclk_obj *self){
+        REG(SYSTICK_BASE+SYST_CSR_OFFSET)=0b000;
+        REG(SYSTICK_BASE+SYST_RVR_OFFSET)=1750000;
+        REG(SYSTICK_BASE+SYST_CVR_OFFSET)=0;
+        REG(SYSTICK_BASE+SYST_CSR_OFFSET)=0b111;
 }

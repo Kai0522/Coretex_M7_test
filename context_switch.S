@@ -1,13 +1,11 @@
 .syntax unified
 
-.macro save_kernel_state
-	mrs ip, psr
-	push {r4, r5, r6, r7, r8, r9, r10, r11, ip, lr}
-.endm
-
 .type svc_handler, %function
 .global svc_handler
+.type systick_handler, %function
+.global systick_handler
 svc_handler:
+systick_handler:
 	/* save user state */
 	mrs r0, psp
 	stmdb r0!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
@@ -20,23 +18,28 @@ svc_handler:
 
 .global activate
 activate:
-	save_kernel_state
+	/* save kernel state */
+	mrs ip, psr
+	push {r4, r5, r6, r7, r8, r9, r10, r11, ip, lr}
 
 	/* load user state */
 	ldmia r0!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
+
 	msr psp, r0
 
 	/* jump to user task */
 	bx lr
 
-.global task_init_env
-task_init_env:
-	save_kernel_state
+.global init_activate_env
+init_activate_env:
+	/* save kernel state */
+	mrs ip, psr
+	push {r4, r5, r6, r7, r8, r9, r10, r11, ip, lr}
 
 	/* switch to process stack */
 	msr psp, r0
 	mov r0, #3
 	msr control, r0
 	isb
-	bl syscall
+	svc 0
 	bx lr
